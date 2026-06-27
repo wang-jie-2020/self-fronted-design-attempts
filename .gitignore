@@ -5,4 +5,5 @@ Thumbs.db
 .agents
 /skills-lock.json
 .impeccable
-
+outputs/
+prompts/
