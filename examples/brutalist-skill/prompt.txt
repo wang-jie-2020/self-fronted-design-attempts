@@ -1,0 +1,52 @@
+使用 brutalist-skill。为一个 SOC 安全监控平台做首页（桌面优先）。
+  固定为 Tactical Telemetry 模式（不要混 Swiss 模式）。
+  技术栈：Next.js + Tailwind。
+  要求：深色底、单一警示红强调、全大写微文案、高密度数据区、硬边框和90度直角、轻微CRT扫
+  描线质感。
+  输出：完整页面代码（含响应式与基础可访问性）。
+
+  使用 brutalist-skill。为工业机器人公司做品牌官网首屏 + 3个内容区。
+  固定为 Swiss Industrial Print 模式（浅底高对比）。
+  要求：大字标题、强网格分栏、可见分割线、极少色彩（黑/白/红）、无圆角、无渐变、无厚重阴
+  影。
+  输出：可运行 React 页面。
+
+  使用 brutalist-skill。把我现有的 SaaS landing page 改造成工业 brutalist 风。
+  保留原有信息架构和文案，不改功能逻辑，只改视觉与布局。
+  模式：Tactical Telemetry。
+  请先列出改造清单，再给最终代码。
+
+  使用 brutalist-skill。做一个“战术遥测数据大屏”页面。
+  包含：顶部状态条、左侧事件流、中间主指标、右侧告警与日志。
+  要求：monospace 主导、ASCII 风格标签、网格化分区、高信息密度、层级清晰。
+  输出：单文件页面代码。
+
+  使用 brutalist-skill。做一个实验性作品集网站（portfolio）。
+  模式：Swiss Industrial Print。
+  要求：强排版对比、标题超大、图文不对称网格、机械感分隔线、少量红色强调。
+  不要做常规三栏卡片模板。
+
+  使用 brutalist-skill。给我一套可复用组件（Tailwind）：
+  Nav、DataCard、AlertStrip、MetricRow、LogTable、CommandInput。
+  模式：Tactical Telemetry。
+  要求：统一设计token（颜色/间距/字体/边框），并给使用示例。
+
+  使用 brutalist-skill。为硬件产品技术白皮书做专题页。
+  模式：Swiss Industrial Print。
+  要求：像工业说明书：编号系统、分区标题、全局基线网格、图注和标注线、少装饰。
+  输出：页面结构 + 样式实现。
+
+  使用 brutalist-skill。做一个“威胁情报周报”编辑页面（非dashboard）。
+  模式：Tactical Telemetry。
+  要求：暗色终端感、段落可读、小字标签系统、低饱和红色提示、轻量噪点与扫描线。
+  输出完整HTML+CSS（不依赖框架）。
+
+  使用 brutalist-skill。做同一份内容的 A/B 两版：
+  A=Swiss Industrial Print，B=Tactical Telemetry。
+  保持文案一致，仅改变视觉系统与布局语法。
+  输出两份页面，便于我比较方向。
+
+  使用 brutalist-skill。请在输出前先锁定一个模式（Swiss 或
+  Tactical）并说明理由，禁止混用。
+  然后实现一个数据密集型管理页，包含表格、过滤、状态标签、时间线。
+  要求：无圆角、无渐变、无玻璃拟态、可读性优先。

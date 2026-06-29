@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team Handbook Landing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+
+      body {
+        margin: 0;
+        background: #f7f6f3;
+        color: #2f3437;
+        font-family: "SF Pro Display", "Geist Sans", "Helvetica Neue", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      .editorial {
+        font-family: "Newsreader", serif;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+          transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+        transition-delay: calc(var(--index, 0) * 80ms);
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      details .faq-plus {
+        transition: transform 0.2s ease;
+      }
+
+      details[open] .faq-plus {
+        transform: rotate(45deg);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="min-h-screen overflow-x-hidden bg-[#F7F6F3] text-[#2F3437]">
+      <header class="border-b border-[#EAEAEA] bg-[#F7F6F3]">
+        <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4 md:px-8">
+          <a href="#" class="text-sm font-semibold tracking-[-0.01em] text-[#111111]">Team Handbook</a>
+
+          <nav class="hidden items-center gap-8 text-sm text-[#787774] md:flex">
+            <a href="#features" class="transition-colors hover:text-[#2F3437]">Features</a>
+            <a href="#faq" class="transition-colors hover:text-[#2F3437]">FAQ</a>
+            <a href="#cta" class="transition-colors hover:text-[#2F3437]">Get Started</a>
+          </nav>
+
+          <a
+            href="#cta"
+            class="inline-flex h-9 items-center rounded-md border border-[#111111] bg-[#111111] px-4 text-sm font-medium text-white transition-colors hover:bg-[#333333] active:scale-[0.98]"
+          >
+            Start Free
+          </a>
+        </div>
+      </header>
+
+      <section class="border-b border-[#EAEAEA] py-24 md:py-32">
+        <div class="mx-auto w-full max-w-6xl px-6 md:px-8">
+          <div class="reveal max-w-5xl" style="--index: 0">
+            <p class="mb-8 text-xs uppercase tracking-[0.08em] text-[#787774]">Team Knowledge Base</p>
+
+            <h1 class="editorial text-[clamp(2.4rem,5.6vw,4.8rem)] leading-[1.08] tracking-[-0.03em] text-[#111111]">
+              A single place for decisions, runbooks, and the context your team needs to move without handoffs.
+            </h1>
+
+            <p class="mt-8 max-w-3xl text-base leading-8 text-[#555552] md:text-lg">
+              Keep architecture notes, onboarding guides, and incident knowledge in one calm workspace. Every page is
+              searchable, versioned, and easy to maintain as your team grows.
+            </p>
+
+            <div class="mt-10 flex flex-wrap items-center gap-4">
+              <a
+                href="#cta"
+                class="inline-flex h-11 items-center rounded-md border border-[#111111] bg-[#111111] px-6 text-sm font-medium text-white transition-colors hover:bg-[#333333] active:scale-[0.98]"
+              >
+                Create Workspace
+              </a>
+              <a
+                href="#features"
+                class="inline-flex h-11 items-center rounded-md border border-[#EAEAEA] bg-[#F9F9F8] px-6 text-sm font-medium text-[#2F3437] transition-colors hover:bg-[#F2F1EE]"
+              >
+                View Features
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="border-b border-[#EAEAEA] py-24 md:py-32">
+        <div class="mx-auto w-full max-w-6xl px-6 md:px-8">
+          <h2
+            class="editorial reveal max-w-4xl text-[clamp(2rem,4.6vw,3.5rem)] leading-[1.12] tracking-[-0.025em] text-[#111111]"
+            style="--index: 1"
+          >
+            Built for teams that document as they ship.
+          </h2>
+
+          <div class="mt-12 grid gap-6 md:grid-cols-3">
+            <article
+              class="reveal rounded-xl border border-[#EAEAEA] bg-[#FFFFFF] p-7"
+              style="--index: 2"
+            >
+              <div
+                class="mb-5 inline-flex rounded-full bg-[#E1F3FE] px-3 py-1 text-xs font-medium uppercase tracking-[0.06em] text-[#1F6C9F]"
+              >
+                Search
+              </div>
+              <h3 class="text-xl leading-7 tracking-[-0.015em] text-[#111111]">Fast retrieval, clear context</h3>
+              <p class="mt-4 text-sm leading-7 text-[#666663]">
+                Find exactly what you need with semantic search, linked references, and concise page summaries.
+              </p>
+            </article>
+
+            <article
+              class="reveal rounded-xl border border-[#EAEAEA] bg-[#FFFFFF] p-7"
+              style="--index: 3"
+            >
+              <div
+                class="mb-5 inline-flex rounded-full bg-[#EDF3EC] px-3 py-1 text-xs font-medium uppercase tracking-[0.06em] text-[#346538]"
+              >
+                Versioning
+              </div>
+              <h3 class="text-xl leading-7 tracking-[-0.015em] text-[#111111]">Every change is traceable</h3>
+              <p class="mt-4 text-sm leading-7 text-[#666663]">
+                Keep a clean history of edits, compare revisions, and restore trusted content when priorities change.
+              </p>
+            </article>
+
+            <article
+              class="reveal rounded-xl border border-[#EAEAEA] bg-[#FFFFFF] p-7"
+              style="--index: 4"
+            >
+              <div
+                class="mb-5 inline-flex rounded-full bg-[#FBF3DB] px-3 py-1 text-xs font-medium uppercase tracking-[0.06em] text-[#956400]"
+              >
+                Workflow
+              </div>
+              <h3 class="text-xl leading-7 tracking-[-0.015em] text-[#111111]">Docs inside daily work</h3>
+              <p class="mt-4 text-sm leading-7 text-[#666663]">
+                Capture meeting notes, decisions, and runbooks where the work happens so knowledge stays current.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="border-b border-[#EAEAEA] py-24 md:py-32">
+        <div class="mx-auto w-full max-w-5xl px-6 md:px-8">
+          <h2
+            class="editorial reveal max-w-3xl text-[clamp(1.9rem,4.2vw,3.1rem)] leading-[1.15] tracking-[-0.02em] text-[#111111]"
+            style="--index: 5"
+          >
+            Questions teams usually ask before moving their knowledge base.
+          </h2>
+
+          <div class="mt-12 divide-y divide-[#EAEAEA] border-t border-[#EAEAEA]">
+            <details class="reveal group py-6" style="--index: 6">
+              <summary class="flex cursor-pointer list-none items-start justify-between gap-6 text-left text-base font-medium leading-7 text-[#111111] marker:content-none">
+                <span>How long does migration take?</span>
+                <span class="faq-plus mt-0.5 text-xl leading-none text-[#787774]">+</span>
+              </summary>
+              <p class="mt-4 max-w-3xl pr-8 text-sm leading-7 text-[#666663]">
+                Most teams import existing docs, playbooks, and notes in under one day. You can move in phases by team or by workspace.
+              </p>
+            </details>
+
+            <details class="reveal group py-6" style="--index: 7">
+              <summary class="flex cursor-pointer list-none items-start justify-between gap-6 text-left text-base font-medium leading-7 text-[#111111] marker:content-none">
+                <span>Can we control who edits critical pages?</span>
+                <span class="faq-plus mt-0.5 text-xl leading-none text-[#787774]">+</span>
+              </summary>
+              <p class="mt-4 max-w-3xl pr-8 text-sm leading-7 text-[#666663]">
+                Yes. You can set page-level permissions, reviewer requirements, and workspace roles for write access and approvals.
+              </p>
+            </details>
+
+            <details class="reveal group py-6" style="--index: 8">
+              <summary class="flex cursor-pointer list-none items-start justify-between gap-6 text-left text-base font-medium leading-7 text-[#111111] marker:content-none">
+                <span>Does search include old revisions?</span>
+                <span class="faq-plus mt-0.5 text-xl leading-none text-[#787774]">+</span>
+              </summary>
+              <p class="mt-4 max-w-3xl pr-8 text-sm leading-7 text-[#666663]">
+                Search focuses on current content by default, and lets you include historical versions when you need audit context.
+              </p>
+            </details>
+
+            <details class="reveal group py-6" style="--index: 9">
+              <summary class="flex cursor-pointer list-none items-start justify-between gap-6 text-left text-base font-medium leading-7 text-[#111111] marker:content-none">
+                <span>How do shortcuts work in the editor?</span>
+                <span class="faq-plus mt-0.5 text-xl leading-none text-[#787774]">+</span>
+              </summary>
+              <p class="mt-4 max-w-3xl pr-8 text-sm leading-7 text-[#666663]">
+                Common actions are keyboard-first, including quick search
+                <kbd class="mx-1 rounded border border-[#EAEAEA] bg-[#F7F6F3] px-1.5 py-0.5 text-xs">⌘K</kbd>
+                and page switch
+                <kbd class="mx-1 rounded border border-[#EAEAEA] bg-[#F7F6F3] px-1.5 py-0.5 text-xs">⌘P</kbd>.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section id="cta" class="py-24 md:py-32">
+        <div class="mx-auto w-full max-w-6xl px-6 md:px-8">
+          <div class="reveal rounded-xl border border-[#EAEAEA] bg-[#FFFFFF] px-6 py-12 md:px-10" style="--index: 10">
+            <div class="max-w-4xl">
+              <p class="text-xs uppercase tracking-[0.08em] text-[#787774]">Ready to start</p>
+              <h2 class="editorial mt-4 text-[clamp(2rem,4.8vw,3.7rem)] leading-[1.1] tracking-[-0.03em] text-[#111111]">
+                Give your team one dependable place for shared knowledge.
+              </h2>
+              <p class="mt-6 max-w-2xl text-base leading-8 text-[#666663]">
+                Start with your most-used documents, bring the rest in over time, and keep every decision easy to find.
+              </p>
+
+              <div class="mt-10 flex flex-wrap items-center gap-4">
+                <a
+                  href="#"
+                  class="inline-flex h-11 items-center rounded-md border border-[#111111] bg-[#111111] px-6 text-sm font-medium text-white transition-colors hover:bg-[#333333] active:scale-[0.98]"
+                >
+                  Create Workspace
+                </a>
+                <a
+                  href="#"
+                  class="inline-flex h-11 items-center rounded-md border border-[#EAEAEA] bg-[#F9F9F8] px-6 text-sm font-medium text-[#2F3437] transition-colors hover:bg-[#F2F1EE]"
+                >
+                  Talk to Sales
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const revealEls = document.querySelectorAll('.reveal');
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+      );
+
+      revealEls.forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>

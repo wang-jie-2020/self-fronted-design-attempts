@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tactical Telemetry Board</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #121212;
+        --panel: #0f0f0f;
+        --line: #2a2a2a;
+        --line-strong: #3a3a3a;
+        --fg: #eaeaea;
+        --muted: #9b9b9b;
+        --accent: #e61919;
+        --ok: #4af626;
+      }
+
+      * {
+        box-sizing: border-box;
+        border-radius: 0;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 12px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        overflow: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.04) 0 1px,
+          transparent 1px 3px
+        );
+        opacity: 0.28;
+        mix-blend-mode: soft-light;
+        z-index: 99;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.05) 0.65px, transparent 0.65px);
+        background-size: 3px 3px;
+        opacity: 0.1;
+        z-index: 98;
+      }
+
+      .board {
+        height: 100%;
+        display: grid;
+        grid-template-rows: 72px 1fr;
+        gap: 1px;
+        background: var(--line);
+      }
+
+      .topbar {
+        display: grid;
+        grid-template-columns: 2.5fr repeat(5, minmax(110px, 1fr));
+        gap: 1px;
+        background: var(--line);
+      }
+
+      .topcell {
+        min-width: 0;
+        background: var(--panel);
+        padding: 8px 10px;
+        display: grid;
+        align-content: center;
+        gap: 3px;
+        border-bottom: 1px solid var(--line-strong);
+      }
+
+      .brand {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+      }
+
+      .topkey {
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .topval {
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .live-link {
+        color: var(--ok);
+      }
+
+      .layout {
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 360px 1fr 390px;
+        gap: 1px;
+        background: var(--line);
+      }
+
+      .panel {
+        min-height: 0;
+        background: var(--panel);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+      }
+
+      .panel-hd {
+        position: relative;
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--line);
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        color: var(--fg);
+      }
+
+      .panel-hd::before,
+      .panel-hd::after {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .panel-hd::before {
+        content: "+";
+        left: 4px;
+      }
+
+      .panel-hd::after {
+        content: "+";
+        right: 4px;
+      }
+
+      .panel-ft {
+        border-top: 1px solid var(--line);
+        padding: 7px 12px;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        font-size: 10px;
+      }
+
+      .events-wrap {
+        overflow: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      thead th {
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 500;
+      }
+
+      th,
+      td {
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+        padding: 6px 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      th:nth-child(1),
+      td:nth-child(1) {
+        width: 74px;
+      }
+
+      th:nth-child(2),
+      td:nth-child(2) {
+        width: 68px;
+      }
+
+      th:nth-child(3),
+      td:nth-child(3) {
+        width: 58px;
+      }
+
+      .lvl-alrt {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .lvl-warn {
+        color: var(--fg);
+        font-weight: 700;
+      }
+
+      .center-body {
+        min-height: 0;
+        padding: 10px;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 10px;
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1px;
+        background: var(--line);
+      }
+
+      .kpi {
+        background: #101010;
+        padding: 8px;
+        display: grid;
+        gap: 4px;
+      }
+
+      .kpi dt {
+        margin: 0;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .kpi dd {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
+
+      .core-grid {
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 1.3fr 0.9fr;
+        gap: 1px;
+        background: var(--line);
+      }
+
+      .core-box {
+        min-width: 0;
+        min-height: 0;
+        background: #101010;
+        border: 1px solid transparent;
+        padding: 10px;
+        display: grid;
+        grid-template-rows: auto auto auto 1fr;
+        gap: 8px;
+      }
+
+      .ascii-tag {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .ops {
+        font-size: clamp(3.2rem, 7.2vw, 7.4rem);
+        line-height: 0.86;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+      }
+
+      .unitline {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .delta {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .separator {
+        border: 0;
+        border-top: 1px solid var(--line);
+        margin: 2px 0;
+      }
+
+      .matrix {
+        margin: 0;
+        color: var(--fg);
+        font-size: 11px;
+        line-height: 1.28;
+      }
+
+      .diag-list {
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+      }
+
+      .diag-list div {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .diag-list dt {
+        margin: 0;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .diag-list dd {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .node-wrap {
+        border-top: 1px solid var(--line);
+        padding-top: 8px;
+      }
+
+      .side {
+        min-height: 0;
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        gap: 1px;
+        background: var(--line);
+      }
+
+      .alerts-wrap,
+      .logs-wrap {
+        overflow: auto;
+      }
+
+      .alert-item {
+        display: grid;
+        grid-template-columns: 84px 1fr 54px;
+        gap: 8px;
+        padding: 7px 8px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .alert-code {
+        color: var(--muted);
+      }
+
+      .alert-score {
+        text-align: right;
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .log-feed {
+        margin: 0;
+        padding: 8px;
+        font-size: 11px;
+        line-height: 1.35;
+        color: var(--fg);
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      @media (max-width: 1280px) {
+        .layout {
+          grid-template-columns: 310px 1fr 340px;
+        }
+
+        .topbar {
+          grid-template-columns: 2fr repeat(5, minmax(90px, 1fr));
+        }
+      }
+
+      @media (max-width: 1024px) {
+        body {
+          overflow: auto;
+        }
+
+        .board {
+          height: auto;
+          min-height: 100%;
+        }
+
+        .layout {
+          grid-template-columns: 1fr;
+          grid-template-rows: 420px 720px 540px;
+        }
+
+        .side {
+          grid-template-rows: 1fr 1fr;
+        }
+
+        .topbar {
+          grid-template-columns: 1fr 1fr;
+          grid-auto-rows: 72px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="board">
+      <header class="topbar">
+        <div class="topcell brand">[ Tactical Telemetry Board ] © Orbital Ctrl ™</div>
+
+        <div class="topcell">
+          <span class="topkey">Time / UTC</span>
+          <output id="utc" class="topval">----</output>
+        </div>
+
+        <div class="topcell">
+          <span class="topkey">Network</span>
+          <data class="topval live-link">[ Link:Up ]</data>
+        </div>
+
+        <div class="topcell">
+          <span class="topkey">Mode</span>
+          <kbd class="topval">Ops / Active</kbd>
+        </div>
+
+        <div class="topcell">
+          <span class="topkey">Tick</span>
+          <output id="tick" class="topval">000000</output>
+        </div>
+
+        <div class="topcell">
+          <span class="topkey">Rev</span>
+          <samp class="topval">2.6.19</samp>
+        </div>
+      </header>
+
+      <div class="layout">
+        <section class="panel">
+          <header class="panel-hd">[ Left Channel /// Event Stream ]</header>
+
+          <div class="events-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>T+Time</th>
+                  <th>Unit</th>
+                  <th>Lvl</th>
+                  <th>Payload</th>
+                </tr>
+              </thead>
+              <tbody id="eventRows"></tbody>
+            </table>
+          </div>
+
+          <footer class="panel-ft">
+            <span>Buffer <output id="eventCount">00000</output></span>
+            <span>Critical <output id="criticalCount">00</output></span>
+          </footer>
+        </section>
+
+        <section class="panel">
+          <header class="panel-hd">[ Center Grid /// Core Metrics ]</header>
+
+          <div class="center-body">
+            <div class="kpi-grid">
+              <dl class="kpi">
+                <dt>Latency / ms</dt>
+                <dd id="latencyValue">38.1</dd>
+              </dl>
+              <dl class="kpi">
+                <dt>Pkt Loss / %</dt>
+                <dd id="lossValue">0.42</dd>
+              </dl>
+              <dl class="kpi">
+                <dt>Cpu Load / %</dt>
+                <dd id="cpuValue">72</dd>
+              </dl>
+              <dl class="kpi">
+                <dt>Queue Depth</dt>
+                <dd id="queueValue">214</dd>
+              </dl>
+            </div>
+
+            <div class="core-grid">
+              <article class="core-box">
+                <div class="ascii-tag">[ Core Throughput ]</div>
+                <output id="opsValue" class="ops">12873</output>
+                <div class="unitline">
+                  Ops/min /// Delta <data id="deltaValue" class="delta">+014</data>
+                </div>
+                <hr class="separator" />
+                <pre class="matrix">
++-----------------------------+
+| Route Map / Grid-7         |
+| N1 >>> N3 >>> N8 >>> C2    |
+| N1 >>> N4 >>> N9 >>> C2    |
+| N2 >>> N6 >>> N8 >>> C4    |
+| Hot Sector: <span id="hotSector">D4</span>              |
++-----------------------------+</pre
+                >
+              </article>
+
+              <article class="core-box">
+                <div class="ascii-tag">[ Node Load Matrix ]</div>
+                <dl class="diag-list">
+                  <div><dt>Node-A / tx</dt><dd id="txA">2450</dd></div>
+                  <div><dt>Node-B / tx</dt><dd id="txB">2198</dd></div>
+                  <div><dt>Node-C / tx</dt><dd id="txC">2644</dd></div>
+                  <div><dt>Node-D / tx</dt><dd id="txD">2388</dd></div>
+                  <div><dt>Cache Hit / %</dt><dd id="cacheHit">97.3</dd></div>
+                  <div><dt>Retry Window</dt><dd id="retryWin">04</dd></div>
+                </dl>
+
+                <div class="node-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Path</th>
+                        <th>State</th>
+                        <th>Rtt</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>N1///C2</td>
+                        <td>Locked</td>
+                        <td id="rtt1">26</td>
+                      </tr>
+                      <tr>
+                        <td>N4///C2</td>
+                        <td>Synced</td>
+                        <td id="rtt2">31</td>
+                      </tr>
+                      <tr>
+                        <td>N8///C4</td>
+                        <td>Degraded</td>
+                        <td id="rtt3">44</td>
+                      </tr>
+                      <tr>
+                        <td>N9///C1</td>
+                        <td>Locked</td>
+                        <td id="rtt4">28</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <footer class="panel-ft">
+            <span>Sync Step <samp id="syncStep">S-391</samp></span>
+            <span>Checksum <samp id="checksum">9AF2E17C</samp></span>
+          </footer>
+        </section>
+
+        <aside class="side">
+          <section class="panel">
+            <header class="panel-hd">[ Right Channel /// Alert Bus ]</header>
+
+            <div class="alerts-wrap" id="alertList"></div>
+
+            <footer class="panel-ft">
+              <span>Open Alerts <output id="openAlerts">00</output></span>
+              <span class="muted">Threshold: Alrt &gt; 03</span>
+            </footer>
+          </section>
+
+          <section class="panel">
+            <header class="panel-hd">[ Right Channel /// Log Terminal ]</header>
+
+            <div class="logs-wrap">
+              <samp id="logFeed" class="log-feed"></samp>
+            </div>
+
+            <footer class="panel-ft">
+              <span>Stream <data>Live</data></span>
+              <span>Window 20 Lines</span>
+            </footer>
+          </section>
+        </aside>
+      </div>
+    </div>
+
+    <script>
+      const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+      const rand = (min, max) => min + Math.random() * (max - min);
+      const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+      const eventRows = document.getElementById("eventRows");
+      const eventCountEl = document.getElementById("eventCount");
+      const criticalCountEl = document.getElementById("criticalCount");
+      const alertListEl = document.getElementById("alertList");
+      const openAlertsEl = document.getElementById("openAlerts");
+      const logFeedEl = document.getElementById("logFeed");
+
+      const utcEl = document.getElementById("utc");
+      const tickEl = document.getElementById("tick");
+
+      const opsValueEl = document.getElementById("opsValue");
+      const deltaValueEl = document.getElementById("deltaValue");
+      const latencyValueEl = document.getElementById("latencyValue");
+      const lossValueEl = document.getElementById("lossValue");
+      const cpuValueEl = document.getElementById("cpuValue");
+      const queueValueEl = document.getElementById("queueValue");
+
+      const txAEl = document.getElementById("txA");
+      const txBEl = document.getElementById("txB");
+      const txCEl = document.getElementById("txC");
+      const txDEl = document.getElementById("txD");
+      const cacheHitEl = document.getElementById("cacheHit");
+      const retryWinEl = document.getElementById("retryWin");
+      const rtt1El = document.getElementById("rtt1");
+      const rtt2El = document.getElementById("rtt2");
+      const rtt3El = document.getElementById("rtt3");
+      const rtt4El = document.getElementById("rtt4");
+      const hotSectorEl = document.getElementById("hotSector");
+      const syncStepEl = document.getElementById("syncStep");
+      const checksumEl = document.getElementById("checksum");
+
+      const units = ["U-01", "U-04", "U-07", "RLY2", "SAT3", "EDGE9", "GW-6"];
+      const payloads = [
+        "DRONE FEED CRC RECOVERED",
+        "THERMAL SPIKE / SECTOR EDGE",
+        "GPS JITTER ABOVE WINDOW",
+        "SIGNAL HOP EXECUTED",
+        "PAYLOAD ACK RECEIVED",
+        "HEARTBEAT DELAY DETECTED",
+        "AUTH TOKEN ROTATED",
+        "CACHE SWEEP COMPLETED",
+        "ROUTE FAILOVER COMMITTED",
+        "SPECTRUM COLLISION AVOIDED",
+      ];
+      const sectors = ["A1", "B3", "C2", "D4", "E1", "F2", "G5", "H3"];
+
+      const alertDefs = [
+        { code: "A-117", text: "GPS DRIFT / SOUTH RIDGE", base: 2 },
+        { code: "A-233", text: "UPLINK RETRY BURST", base: 4 },
+        { code: "A-041", text: "UNBALANCED NODE LOAD", base: 1 },
+        { code: "A-902", text: "AUTH TIMEOUT / EDGE9", base: 3 },
+        { code: "A-308", text: "CACHE MISS STORM", base: 2 },
+        { code: "A-511", text: "RTT ABOVE POLICY BAND", base: 1 },
+      ];
+
+      const logTemplates = [
+        ">>> PIPELINE CHECKPOINT WRITTEN",
+        ">>> EDGE CACHE REINDEX COMPLETE",
+        ">>> LATENCY WATCH WINDOW SHIFTED",
+        ">>> POLICY RULESET VERIFIED",
+        ">>> FALLBACK ROUTE ACTIVATED",
+        ">>> TELEMETRY SLICE ARCHIVED",
+        ">>> RETRY WINDOW NARROWED",
+        ">>> OPERATOR ACK RECEIVED",
+      ];
+
+      let totalEvents = 0;
+      let criticalEvents = 0;
+      let eventSeq = 31000;
+      let ops = 12873;
+      let prevOps = ops;
+      let latency = 38.1;
+      let loss = 0.42;
+      let cpu = 72;
+      let queue = 214;
+      const logBuffer = [];
+
+      function updateClock() {
+        const now = new Date();
+        utcEl.textContent = now.toISOString().replace("T", " ").slice(0, 19) + "Z";
+        tickEl.textContent = String(Math.floor(performance.now() / 10)).padStart(6, "0");
+      }
+
+      function levelClass(level) {
+        if (level === "ALRT") return "lvl-alrt";
+        if (level === "WARN") return "lvl-warn";
+        return "";
+      }
+
+      function nextLevel() {
+        const r = Math.random();
+        if (r < 0.14) return "ALRT";
+        if (r < 0.38) return "WARN";
+        return "INFO";
+      }
+
+      function pushEvent() {
+        eventSeq += 1;
+        const ts = new Date().toISOString().slice(11, 19);
+        const level = nextLevel();
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>${ts}</td>
+          <td>${pick(units)}</td>
+          <td class="${levelClass(level)}">${level}</td>
+          <td>&gt;&gt;&gt; ${pick(payloads)}</td>
+        `;
+
+        eventRows.prepend(tr);
+        while (eventRows.children.length > 22) eventRows.lastChild.remove();
+
+        totalEvents += 1;
+        if (level === "ALRT") criticalEvents += 1;
+
+        eventCountEl.textContent = String(totalEvents).padStart(5, "0");
+        criticalCountEl.textContent = String(criticalEvents).padStart(2, "0");
+      }
+
+      function updateMetrics() {
+        prevOps = ops;
+        ops = Math.round(clamp(ops + rand(-260, 320), 9800, 18900));
+        latency = clamp(latency + rand(-2.8, 3.6), 21, 86);
+        loss = clamp(loss + rand(-0.11, 0.14), 0.04, 2.4);
+        cpu = Math.round(clamp(cpu + rand(-5.5, 6.5), 42, 99));
+        queue = Math.round(clamp(queue + rand(-30, 34), 80, 590));
+
+        const delta = ops - prevOps;
+        const sign = delta >= 0 ? "+" : "";
+        deltaValueEl.textContent = `${sign}${String(delta).padStart(3, "0")}`;
+
+        opsValueEl.textContent = String(ops);
+        latencyValueEl.textContent = latency.toFixed(1);
+        lossValueEl.textContent = loss.toFixed(2);
+        cpuValueEl.textContent = String(cpu);
+        queueValueEl.textContent = String(queue);
+
+        txAEl.textContent = String(Math.round(ops * rand(0.16, 0.24)));
+        txBEl.textContent = String(Math.round(ops * rand(0.15, 0.23)));
+        txCEl.textContent = String(Math.round(ops * rand(0.17, 0.25)));
+        txDEl.textContent = String(Math.round(ops * rand(0.14, 0.22)));
+
+        cacheHitEl.textContent = clamp(98.7 - loss * rand(0.45, 0.88), 92.2, 99.4).toFixed(1);
+        retryWinEl.textContent = String(Math.round(clamp(loss * 10 + rand(1, 4), 1, 9))).padStart(
+          2,
+          "0"
+        );
+
+        rtt1El.textContent = String(Math.round(clamp(latency + rand(-9, 7), 18, 92)));
+        rtt2El.textContent = String(Math.round(clamp(latency + rand(-6, 11), 19, 96)));
+        rtt3El.textContent = String(Math.round(clamp(latency + rand(2, 18), 22, 112)));
+        rtt4El.textContent = String(Math.round(clamp(latency + rand(-7, 9), 18, 95)));
+
+        hotSectorEl.textContent = pick(sectors);
+        syncStepEl.textContent = "S-" + String(Math.floor(rand(280, 520)));
+        checksumEl.textContent = Math.floor(rand(0x10000000, 0xffffffff))
+          .toString(16)
+          .toUpperCase();
+      }
+
+      function renderAlerts() {
+        let totalOpen = 0;
+        alertListEl.innerHTML = "";
+
+        alertDefs.forEach((a) => {
+          const score = Math.max(0, Math.round(a.base + rand(-1.2, 2.1)));
+          totalOpen += score > 0 ? 1 : 0;
+
+          const row = document.createElement("div");
+          row.className = "alert-item";
+          row.innerHTML = `
+            <samp class="alert-code">[${a.code}]</samp>
+            <span>${a.text}</span>
+            <data class="alert-score">${String(score).padStart(2, "0")}</data>
+          `;
+          alertListEl.appendChild(row);
+        });
+
+        openAlertsEl.textContent = String(totalOpen).padStart(2, "0");
+      }
+
+      function pushLogLine() {
+        const ts = new Date().toISOString().slice(11, 19);
+        const line = `[${ts}] ${pick(logTemplates)}`;
+        logBuffer.unshift(line);
+        while (logBuffer.length > 20) logBuffer.pop();
+        logFeedEl.textContent = logBuffer.join("\n");
+      }
+
+      for (let i = 0; i < 16; i++) pushEvent();
+      for (let i = 0; i < 12; i++) pushLogLine();
+      updateClock();
+      updateMetrics();
+      renderAlerts();
+
+      setInterval(updateClock, 1000);
+      setInterval(pushEvent, 1400);
+      setInterval(updateMetrics, 1800);
+      setInterval(renderAlerts, 2300);
+      setInterval(pushLogLine, 1600);
+    </script>
+  </body>
+</html>

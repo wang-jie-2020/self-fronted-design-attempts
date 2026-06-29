@@ -1,0 +1,15 @@
+使用 minimalist-skill。
+
+任务：做一个「团队知识库」landing page（Hero + 3个特性卡 + FAQ + CTA）。
+技术：Next.js + Tailwind。
+风格要求：
+- 纯净浅色背景（warm off-white）
+- 排版主导（大标题 + 易读正文）
+- 1px 细分割线组织信息
+- 无渐变、无重阴影、无霓虹效果
+- 组件圆角克制（8px/12px）
+- 按钮黑底白字，hover 仅轻微变化
+- FAQ 用 divider 样式，不用厚重卡片
+- 移动端保持留白和可读性
+
+输出：完整可运行页面代码，不要省略。

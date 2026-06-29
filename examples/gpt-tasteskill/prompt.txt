@@ -1,0 +1,17 @@
+用 gpt-tasteskill。                                                                 
+                                                                                        
+    任务：做一个 AI coding assistant 的 landing page（仅一个页面）。                    
+    技术：Next.js + Tailwind + GSAP。                                                   
+    风格：深色、电影感、高留白、非模板化。                                              
+                                                                                        
+    硬性要求：                                                                          
+    1) 先输出 <design_plan>，包含：                                                     
+       - Python 随机选择结果（Hero 架构、字体、3个组件、2个GSAP范式）                   
+       - AIDA 检查                                                                      
+       - Hero 宽度与 2-3 行校验                                                         
+       - Bento 无空洞校验（grid-flow-dense）                                            
+       - 标签与按钮对比检查                                                             
+    2) Hero 不得出现 4 行以上标题；不得用 SECTION 01 / QUESTION 05 这类标签。           
+    3) 必须有真实 GSAP ScrollTrigger（至少一个 pin + 一个 scrub）。                     
+    4) 页面结构按 AIDA：Nav -> Hero -> Features/Bento -> Scroll Story -> CTA/Footer。   
+    5) 输出完整可运行代码，不要省略。 单HTML, 到out\{skill-name} 下        

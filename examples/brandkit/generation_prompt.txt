@@ -1,0 +1,18 @@
+Premium brand board for SentryGrid, a security monitoring brand. Single 3x3 overview grid, aspect ratio 4:3, 4K ultra-high-resolution quality, dark charcoal canvas, strong gutters, sparse typography, large negative space, premium identity-deck style. Keywords: vigilant, boundary, precision. Tone: professional, restrained, trustworthy.
+
+Core concept: guarded perimeter grid with a vigilant protected core.
+
+Panel plan:
+1) Logo cover: SG symbol + SentryGrid wordmark.
+2) Logo construction: geometry circles, grid, cuts, spacing measurements.
+3) Digital application: browser chrome + security dashboard header fragment.
+4) Tagline panel: “Guard Every Boundary.”
+5) Color system swatches with labels: #0B0F14 #121D2E #48D6FF #FF5A64 #C9D3DF.
+6) Typography specimen: neo-grotesk sans + technical monospace.
+7) Physical mockup: access card / security badge / sticker.
+8) Image direction panel: moody network-perimeter landscape with subtle halftone grain.
+9) System detail panel: UI chips SAFE/WATCH/ALERT/CRITICAL, boundary lines, radar rings, crosshair markers.
+
+Logo direction: ownable SG monogram fused with shield/perimeter geometry and subtle eye/crosshair center; simple, scalable, premium.
+
+Avoid clutter, generic AI neon glow, random icons, copied real logos, and dense fake dashboard text.

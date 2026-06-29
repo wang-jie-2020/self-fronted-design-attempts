@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Astra Code — AI Coding Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.16/index.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Geist Sans", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+            boxShadow: {
+              cinematic: "0 40px 120px rgba(0,0,0,0.45)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #04060a;
+        color: #f5f7ff;
+        font-family: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
+      }
+
+      .grain::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.14;
+        z-index: 2;
+        background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.1) 1px, transparent 0);
+        background-size: 4px 4px;
+        mix-blend-mode: soft-light;
+      }
+
+      .radial-wash {
+        background:
+          radial-gradient(circle at 20% 20%, rgba(93, 107, 255, 0.18), transparent 38%),
+          radial-gradient(circle at 82% 14%, rgba(31, 196, 255, 0.16), transparent 34%),
+          radial-gradient(circle at 50% 70%, rgba(255, 255, 255, 0.08), transparent 58%),
+          #04060a;
+      }
+
+      .hero-cinema::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(circle at 50% 40%, rgba(4, 6, 10, 0.24), rgba(4, 6, 10, 0.86) 62%);
+      }
+
+      .text-balance {
+        text-wrap: balance;
+      }
+
+      .marquee-mask {
+        -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+        mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+      }
+
+      .marquee-track {
+        width: max-content;
+        display: flex;
+      }
+
+      .accordion-panel {
+        flex: 1;
+      }
+
+      .accordion-panel.is-active .accordion-copy {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .accordion-copy {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: all 0.5s ease;
+      }
+
+      .word {
+        opacity: 0.1;
+        display: inline-block;
+        margin-right: 0.28em;
+      }
+    </style>
+  </head>
+  <body class="grain radial-wash selection:bg-white/25">
+    <main class="overflow-x-hidden w-full max-w-full relative">
+      <div class="pointer-events-none fixed inset-0 z-0">
+        <div class="absolute -left-24 top-28 h-80 w-80 rounded-full bg-indigo-500/20 blur-[120px]"></div>
+        <div class="absolute right-[-60px] top-[34%] h-72 w-72 rounded-full bg-cyan-400/20 blur-[120px]"></div>
+        <div class="absolute left-[44%] bottom-[8%] h-96 w-96 -translate-x-1/2 rounded-full bg-white/10 blur-[160px]"></div>
+      </div>
+
+      <header class="relative z-20 px-6 pt-8 md:px-12">
+        <nav
+          class="mx-auto flex max-w-7xl items-center justify-between rounded-full border border-white/15 bg-black/45 px-6 py-3 backdrop-blur-xl"
+        >
+          <a href="#" class="text-sm font-semibold tracking-[0.22em] text-white/90">ASTRA CODE</a>
+          <div class="hidden items-center gap-8 text-xs tracking-[0.18em] text-zinc-300 md:flex">
+            <a href="#features" class="transition hover:text-white">Features</a>
+            <a href="#story" class="transition hover:text-white">Workflow</a>
+            <a href="#cta" class="transition hover:text-white">Pricing</a>
+          </div>
+          <a
+            href="#cta"
+            class="rounded-full border border-white/25 bg-white px-4 py-2 text-xs font-semibold tracking-[0.14em] text-black transition hover:bg-zinc-200"
+          >
+            Get Access
+          </a>
+        </nav>
+      </header>
+
+      <section id="hero" class="hero-cinema relative z-10 min-h-screen pt-24 pb-36 md:pt-32 md:pb-44">
+        <div class="absolute inset-0 -z-10 overflow-hidden">
+          <img
+            src="https://picsum.photos/seed/cinematic-code-vault/1920/1080"
+            alt="Dark cinematic background"
+            class="h-full w-full object-cover opacity-45 grayscale contrast-125 mix-blend-luminosity"
+          />
+        </div>
+
+        <div class="mx-auto flex h-full w-full max-w-7xl items-center px-6 md:px-12">
+          <div class="mx-auto w-full max-w-6xl text-center">
+            <h1
+              class="text-balance mx-auto max-w-6xl font-semibold leading-[0.96] tracking-[-0.03em] text-white"
+              style="font-size: clamp(2.15rem, 5.4vw, 5.35rem)"
+            >
+              Ship production code at thought-speed with Astra Code.
+            </h1>
+            <p class="mx-auto mt-8 max-w-3xl text-base leading-relaxed text-zinc-300 md:text-lg">
+              Astra reads your repository, reasons through architecture, and lands clean PR-ready changes without
+              breaking your momentum.
+            </p>
+            <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
+              <a
+                href="#cta"
+                class="rounded-full border border-white/20 bg-white px-8 py-3 text-sm font-semibold tracking-[0.14em] text-black transition hover:bg-zinc-100"
+              >
+                Start Free Workspace
+              </a>
+              <a
+                href="#story"
+                class="rounded-full border border-white/25 bg-black/50 px-8 py-3 text-sm font-semibold tracking-[0.14em] text-white transition hover:bg-white/12"
+              >
+                Watch 90s Walkthrough
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="relative z-10 py-32 md:py-48">
+        <div class="mx-auto max-w-7xl px-6 md:px-12">
+          <div class="max-w-4xl">
+            <p class="text-sm uppercase tracking-[0.25em] text-zinc-400">Interest</p>
+            <h2 class="mt-4 text-4xl font-semibold tracking-[-0.02em] text-white md:text-6xl">
+              A dense, no-waste command center for engineering teams.
+            </h2>
+          </div>
+
+          <div class="mt-16 grid grid-cols-12 grid-flow-dense auto-rows-[220px] gap-5">
+            <article
+              class="group relative col-span-12 lg:col-span-8 lg:row-span-2 overflow-hidden rounded-3xl border border-white/15 bg-black/50 p-6 shadow-cinematic"
+            >
+              <div class="mb-6 flex items-center justify-between">
+                <h3 class="text-xl font-semibold text-white">Horizontal task channels</h3>
+                <span class="text-xs tracking-[0.2em] text-zinc-400">Hover to expand</span>
+              </div>
+              <div id="accordion" class="flex h-[calc(100%-3.25rem)] gap-3 overflow-hidden">
+                <button
+                  type="button"
+                  class="accordion-panel is-active group relative overflow-hidden rounded-2xl border border-white/15 text-left transition-transform duration-700 ease-out hover:scale-[1.01]"
+                >
+                  <img
+                    src="https://picsum.photos/seed/agent-reasoning/1000/1600"
+                    alt="Reasoning"
+                    class="absolute inset-0 h-full w-full object-cover opacity-70 grayscale contrast-125 transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
+                  <div class="accordion-copy absolute bottom-5 left-5 right-5">
+                    <p class="text-xs uppercase tracking-[0.2em] text-zinc-300">Reasoning</p>
+                    <p class="mt-2 text-sm text-zinc-100">Breaks complex tasks into auditable steps with explicit assumptions.</p>
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  class="accordion-panel group relative overflow-hidden rounded-2xl border border-white/15 text-left transition-transform duration-700 ease-out hover:scale-[1.01]"
+                >
+                  <img
+                    src="https://picsum.photos/seed/context-map-engine/1000/1600"
+                    alt="Context map"
+                    class="absolute inset-0 h-full w-full object-cover opacity-70 grayscale contrast-125 transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
+                  <div class="accordion-copy absolute bottom-5 left-5 right-5">
+                    <p class="text-xs uppercase tracking-[0.2em] text-zinc-300">Context graph</p>
+                    <p class="mt-2 text-sm text-zinc-100">Finds dependencies, callers, and impact zones before writing code.</p>
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  class="accordion-panel group relative overflow-hidden rounded-2xl border border-white/15 text-left transition-transform duration-700 ease-out hover:scale-[1.01]"
+                >
+                  <img
+                    src="https://picsum.photos/seed/secure-pipeline/1000/1600"
+                    alt="Secure pipeline"
+                    class="absolute inset-0 h-full w-full object-cover opacity-70 grayscale contrast-125 transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
+                  <div class="accordion-copy absolute bottom-5 left-5 right-5">
+                    <p class="text-xs uppercase tracking-[0.2em] text-zinc-300">Safety gates</p>
+                    <p class="mt-2 text-sm text-zinc-100">Runs checks, blocks risky writes, and keeps every edit reviewable.</p>
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  class="accordion-panel group relative overflow-hidden rounded-2xl border border-white/15 text-left transition-transform duration-700 ease-out hover:scale-[1.01]"
+                >
+                  <img
+                    src="https://picsum.photos/seed/deploy-night/1000/1600"
+                    alt="Deploy"
+                    class="absolute inset-0 h-full w-full object-cover opacity-70 grayscale contrast-125 transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
+                  <div class="accordion-copy absolute bottom-5 left-5 right-5">
+                    <p class="text-xs uppercase tracking-[0.2em] text-zinc-300">Release lane</p>
+                    <p class="mt-2 text-sm text-zinc-100">Turns accepted diffs into release notes and deployment runbooks.</p>
+                  </div>
+                </button>
+              </div>
+            </article>
+
+            <article
+              class="group relative col-span-12 lg:col-span-4 lg:row-span-1 overflow-hidden rounded-3xl border border-white/15 bg-black/50 p-6 shadow-cinematic"
+            >
+              <h3 class="text-lg font-semibold text-white">Infinite partner marquee</h3>
+              <p class="mt-2 max-w-xs text-sm text-zinc-300">Used in teams shipping weekly across infra, fintech, and tooling.</p>
+              <div class="marquee-mask mt-8 overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] py-4">
+                <div class="marquee-track items-center gap-8 pr-8 text-sm uppercase tracking-[0.22em] text-zinc-300">
+                  <span>VECTORWORKS</span>
+                  <span>NIGHTSHIFT CLOUD</span>
+                  <span>ARC FORGE</span>
+                  <span>CODEHARBOR</span>
+                  <span>ATLAS SYSTEMS</span>
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="group relative col-span-12 lg:col-span-4 lg:row-span-1 overflow-hidden rounded-3xl border border-white/15 bg-black/50 p-6 shadow-cinematic"
+            >
+              <h3 class="text-lg font-semibold text-white">Repository awareness</h3>
+              <p class="mt-2 text-sm text-zinc-300">Semantic map, ownership hints, and architecture notes in one lens.</p>
+              <div class="mt-5 overflow-hidden rounded-2xl border border-white/10">
+                <img
+                  src="https://picsum.photos/seed/repo-constellation/1200/900"
+                  alt="Repository graph"
+                  class="h-36 w-full object-cover opacity-85 grayscale contrast-125 transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+              </div>
+            </article>
+
+            <article
+              class="group relative col-span-12 lg:col-span-6 lg:row-span-1 overflow-hidden rounded-3xl border border-white/15 bg-black/50 p-6 shadow-cinematic"
+            >
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <h3 class="text-lg font-semibold text-white">Feedback carousel</h3>
+                  <p class="mt-2 text-sm text-zinc-300">Developers keep full control, while cycle time drops release after release.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button
+                    type="button"
+                    id="prev-testimonial"
+                    class="rounded-full border border-white/20 bg-black/50 px-3 py-2 text-xs font-semibold tracking-[0.15em] text-white transition hover:bg-white/10"
+                  >
+                    Prev
+                  </button>
+                  <button
+                    type="button"
+                    id="next-testimonial"
+                    class="rounded-full border border-white/20 bg-white px-3 py-2 text-xs font-semibold tracking-[0.15em] text-black transition hover:bg-zinc-200"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+
+              <div class="mt-5 flex items-center gap-5">
+                <div class="relative h-16 w-24 shrink-0">
+                  <img
+                    id="testimonial-avatar-2"
+                    src="https://picsum.photos/seed/avatar-b/120/120"
+                    alt="Avatar"
+                    class="absolute left-0 top-1/2 h-12 w-12 -translate-y-1/2 rounded-full border border-white/20 object-cover opacity-50"
+                  />
+                  <img
+                    id="testimonial-avatar-1"
+                    src="https://picsum.photos/seed/avatar-a/120/120"
+                    alt="Avatar"
+                    class="absolute left-6 top-1/2 h-14 w-14 -translate-y-1/2 rounded-full border border-white/25 object-cover"
+                  />
+                </div>
+
+                <div>
+                  <p id="testimonial-quote" class="text-base leading-relaxed text-zinc-100">
+                    "Astra removed our context-switching overhead. We now go from issue to reviewed PR in one focused session."
+                  </p>
+                  <p id="testimonial-meta" class="mt-3 text-xs uppercase tracking-[0.2em] text-zinc-400">
+                    Lin Zhou — Platform Lead, Arc Forge
+                  </p>
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="group relative col-span-12 lg:col-span-6 lg:row-span-1 overflow-hidden rounded-3xl border border-white/15 bg-black/50 p-6 shadow-cinematic"
+            >
+              <h3 class="text-lg font-semibold text-white">Human-in-the-loop approvals</h3>
+              <p class="mt-2 max-w-lg text-sm text-zinc-300">
+                Every critical action asks for explicit consent. No silent deploys, no hidden shell side effects.
+              </p>
+              <div class="mt-6 space-y-3 text-xs tracking-[0.18em] text-zinc-300">
+                <div class="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">REQUESTED: run migrations on staging</div>
+                <div class="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">APPROVED: execute tests and open draft PR</div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="story" class="relative z-10 border-t border-white/10 py-32 md:py-48">
+        <div class="mx-auto max-w-7xl px-6 md:px-12">
+          <div class="grid gap-14 lg:grid-cols-[0.9fr_1.1fr]">
+            <aside id="story-pin" class="lg:pr-10">
+              <p class="text-sm uppercase tracking-[0.25em] text-zinc-400">Desire</p>
+              <h2 class="mt-4 text-4xl font-semibold tracking-[-0.02em] text-white md:text-6xl">
+                From raw brief to merged branch with a visible chain of thought.
+              </h2>
+              <p id="scrub-text" class="mt-8 max-w-xl text-base leading-8 text-zinc-300 md:text-lg">
+                Prompt once, trace impact, stage edits, run checks, and ship with confidence while every key decision
+                remains transparent to your team.
+              </p>
+            </aside>
+
+            <div id="story-track" class="space-y-8">
+              <article class="story-card group rounded-3xl border border-white/15 bg-black/50 p-4 shadow-cinematic">
+                <div class="overflow-hidden rounded-2xl border border-white/10">
+                  <img
+                    src="https://picsum.photos/seed/brief-ingest/1600/900"
+                    alt="Brief ingest"
+                    class="h-64 w-full object-cover opacity-90 grayscale contrast-125 transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                </div>
+                <h3 class="mt-4 text-lg font-semibold text-white">1. Brief ingestion</h3>
+                <p class="mt-2 text-sm text-zinc-300">The assistant structures goals, constraints, and success checks before editing a file.</p>
+              </article>
+
+              <article class="story-card group rounded-3xl border border-white/15 bg-black/50 p-4 shadow-cinematic">
+                <div class="overflow-hidden rounded-2xl border border-white/10">
+                  <img
+                    src="https://picsum.photos/seed/impact-trace/1600/900"
+                    alt="Impact trace"
+                    class="h-64 w-full object-cover opacity-90 grayscale contrast-125 transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                </div>
+                <h3 class="mt-4 text-lg font-semibold text-white">2. Impact trace</h3>
+                <p class="mt-2 text-sm text-zinc-300">Call paths and downstream effects are mapped before any risky change is applied.</p>
+              </article>
+
+              <article class="story-card group rounded-3xl border border-white/15 bg-black/50 p-4 shadow-cinematic">
+                <div class="overflow-hidden rounded-2xl border border-white/10">
+                  <img
+                    src="https://picsum.photos/seed/review-loop/1600/900"
+                    alt="Review loop"
+                    class="h-64 w-full object-cover opacity-90 grayscale contrast-125 transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                </div>
+                <h3 class="mt-4 text-lg font-semibold text-white">3. Review + verification</h3>
+                <p class="mt-2 text-sm text-zinc-300">It runs tests, explains trade-offs, and presents only complete, review-ready output.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="cta" class="relative z-10 border-t border-white/10 py-32 md:py-44">
+        <div class="mx-auto max-w-6xl px-6 text-center md:px-12">
+          <p class="text-sm uppercase tracking-[0.25em] text-zinc-400">Action</p>
+          <h2 class="mx-auto mt-4 max-w-4xl text-4xl font-semibold tracking-[-0.02em] text-white md:text-6xl">
+            Bring cinematic engineering velocity to your next release cycle.
+          </h2>
+          <p class="mx-auto mt-6 max-w-2xl text-base text-zinc-300 md:text-lg">
+            Start with one repository. Keep your standards, keep your approvals, ship with less drag.
+          </p>
+
+          <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
+            <a
+              href="#"
+              class="rounded-full border border-white/20 bg-white px-8 py-3 text-sm font-semibold tracking-[0.14em] text-black transition hover:bg-zinc-100"
+            >
+              Start 14-Day Trial
+            </a>
+            <a
+              href="#"
+              class="rounded-full border border-white/25 bg-black/50 px-8 py-3 text-sm font-semibold tracking-[0.14em] text-white transition hover:bg-white/12"
+            >
+              Book Team Demo
+            </a>
+          </div>
+
+          <footer class="mt-20 border-t border-white/10 pt-8">
+            <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs uppercase tracking-[0.2em] text-zinc-500">
+              <a href="#" class="transition hover:text-zinc-300">Security</a>
+              <a href="#" class="transition hover:text-zinc-300">Status</a>
+              <a href="#" class="transition hover:text-zinc-300">Docs</a>
+              <a href="#" class="transition hover:text-zinc-300">Contact</a>
+            </div>
+          </footer>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+
+      const accordionPanels = gsap.utils.toArray(".accordion-panel");
+      const setAccordion = (activePanel) => {
+        accordionPanels.forEach((panel) => {
+          const expanded = panel === activePanel;
+          panel.classList.toggle("is-active", expanded);
+          gsap.to(panel, {
+            flex: expanded ? 2.35 : 0.88,
+            duration: 0.62,
+            ease: "power3.out",
+          });
+        });
+      };
+
+      if (accordionPanels.length) {
+        setAccordion(accordionPanels[0]);
+        accordionPanels.forEach((panel) => {
+          panel.addEventListener("mouseenter", () => setAccordion(panel));
+          panel.addEventListener("focus", () => setAccordion(panel));
+        });
+      }
+
+      const marquee = document.querySelector(".marquee-track");
+      if (marquee) {
+        marquee.innerHTML += marquee.innerHTML;
+        gsap.to(marquee, {
+          xPercent: -50,
+          duration: 24,
+          ease: "none",
+          repeat: -1,
+        });
+      }
+
+      const testimonials = [
+        {
+          quote:
+            '"Astra removed our context-switching overhead. We now go from issue to reviewed PR in one focused session."',
+          meta: "Lin Zhou — Platform Lead, Arc Forge",
+          avatar1: "https://picsum.photos/seed/avatar-a/120/120",
+          avatar2: "https://picsum.photos/seed/avatar-b/120/120",
+        },
+        {
+          quote:
+            '"Our staff engineers trust it because every action is inspectable. Quality went up while delivery got faster."',
+          meta: "Mara Sato — Engineering Manager, Nightshift Cloud",
+          avatar1: "https://picsum.photos/seed/avatar-c/120/120",
+          avatar2: "https://picsum.photos/seed/avatar-d/120/120",
+        },
+        {
+          quote:
+            '"The approval model is exactly what we needed. It accelerates coding without sacrificing operational discipline."',
+          meta: "Diego Park — Principal Engineer, Atlas Systems",
+          avatar1: "https://picsum.photos/seed/avatar-e/120/120",
+          avatar2: "https://picsum.photos/seed/avatar-f/120/120",
+        },
+      ];
+
+      const quoteEl = document.getElementById("testimonial-quote");
+      const metaEl = document.getElementById("testimonial-meta");
+      const avatar1El = document.getElementById("testimonial-avatar-1");
+      const avatar2El = document.getElementById("testimonial-avatar-2");
+      const nextBtn = document.getElementById("next-testimonial");
+      const prevBtn = document.getElementById("prev-testimonial");
+      let testimonialIndex = 0;
+
+      const renderTestimonial = () => {
+        const item = testimonials[testimonialIndex];
+        quoteEl.textContent = item.quote;
+        metaEl.textContent = item.meta;
+        avatar1El.src = item.avatar1;
+        avatar2El.src = item.avatar2;
+
+        gsap.fromTo(
+          [quoteEl, metaEl, avatar1El, avatar2El],
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.45, ease: "power2.out", stagger: 0.04 }
+        );
+      };
+
+      if (nextBtn && prevBtn) {
+        nextBtn.addEventListener("click", () => {
+          testimonialIndex = (testimonialIndex + 1) % testimonials.length;
+          renderTestimonial();
+        });
+
+        prevBtn.addEventListener("click", () => {
+          testimonialIndex = (testimonialIndex - 1 + testimonials.length) % testimonials.length;
+          renderTestimonial();
+        });
+      }
+
+      const scrubParagraph = document.getElementById("scrub-text");
+      if (scrubParagraph) {
+        const words = scrubParagraph.textContent.trim().split(/\s+/);
+        scrubParagraph.innerHTML = words.map((word) => `<span class="word">${word}</span>`).join(" ");
+
+        gsap.to("#scrub-text .word", {
+          opacity: 1,
+          stagger: 0.09,
+          ease: "none",
+          scrollTrigger: {
+            trigger: "#scrub-text",
+            start: "top 78%",
+            end: "bottom 35%",
+            scrub: true,
+          },
+        });
+      }
+
+      ScrollTrigger.create({
+        trigger: "#story",
+        start: "top top+=90",
+        end: "bottom bottom-=80",
+        pin: "#story-pin",
+        pinSpacing: false,
+        invalidateOnRefresh: true,
+      });
+
+      window.addEventListener("resize", () => ScrollTrigger.refresh());
+    </script>
+  </body>
+</html>
