@@ -1,0 +1,47 @@
+ 使用 minimalist-skill。
+
+任务：做一个「团队知识库」landing page（Hero + 3个特性卡 + FAQ + CTA）。
+技术：Next.js + Tailwind。
+风格要求：
+- 纯净浅色背景（warm off-white）
+- 排版主导（大标题 + 易读正文）
+- 1px 细分割线组织信息
+- 无渐变、无重阴影、无霓虹效果
+- 组件圆角克制（8px/12px）
+- 按钮黑底白字，hover 仅轻微变化
+- FAQ 用 divider 样式，不用厚重卡片
+- 移动端保持留白和可读性
+
+输出：完整可运行页面代码，不要省略。
+ 
+ 
+
+
+ 
+
+
+ 使用 brutalist-skill。为工业机器人公司做品牌官网首屏 + 3个内容区。
+  固定为 Swiss Industrial Print 模式（浅底高对比）。
+  要求：大字标题、强网格分栏、可见分割线、极少色彩（黑/白/红）、无圆角、无渐变、无厚重阴
+  影。
+  输出：可运行 React 页面。
+
+
+
+  用 gpt-tasteskill。                                                                 
+                                                                                        
+    任务：做一个 AI coding assistant 的 landing page（仅一个页面）。                    
+    技术：Next.js + Tailwind + GSAP。                                                   
+    风格：深色、电影感、高留白、非模板化。                                              
+                                                                                        
+    硬性要求：                                                                          
+    1) 先输出 <design_plan>，包含：                                                     
+       - Python 随机选择结果（Hero 架构、字体、3个组件、2个GSAP范式）                   
+       - AIDA 检查                                                                      
+       - Hero 宽度与 2-3 行校验                                                         
+       - Bento 无空洞校验（grid-flow-dense）                                            
+       - 标签与按钮对比检查                                                             
+    2) Hero 不得出现 4 行以上标题；不得用 SECTION 01 / QUESTION 05 这类标签。           
+    3) 必须有真实 GSAP ScrollTrigger（至少一个 pin + 一个 scrub）。                     
+    4) 页面结构按 AIDA：Nav -> Hero -> Features/Bento -> Scroll Story -> CTA/Footer。   
+    5) 输出完整可运行代码，不要省略。 单HTML, 到out\{skill-name} 下        
