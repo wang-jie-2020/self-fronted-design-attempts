@@ -1,5 +1,3 @@
-使用 minimalist-skill。
-
 任务：做一个「团队知识库」landing page（Hero + 3个特性卡 + FAQ + CTA）。
 技术：Next.js + Tailwind。
 风格要求：
