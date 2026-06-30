@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AXIS FORGE — Industrial Robotics / Grid Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --black: #0b0b0b;
+        --white: #f7f7f5;
+        --red: #d71f1f;
+        --line: 2px;
+      }
+
+      * {
+        box-sizing: border-box;
+        border-radius: 0 !important;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--white);
+        color: var(--black);
+      }
+
+      body {
+        font-family: "IBM Plex Sans", sans-serif;
+        min-height: 100vh;
+      }
+
+      .site {
+        width: min(1320px, 95vw);
+        margin: 0 auto 3rem;
+        border-left: var(--line) solid var(--black);
+        border-right: var(--line) solid var(--black);
+        border-bottom: var(--line) solid var(--black);
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        border-top: var(--line) solid var(--black);
+      }
+
+      .col {
+        border-right: var(--line) solid var(--black);
+        padding: 1rem;
+        min-height: 100%;
+      }
+
+      .row > .col:last-child {
+        border-right: 0;
+      }
+
+      .c1 {
+        grid-column: span 1;
+      }
+
+      .c2 {
+        grid-column: span 2;
+      }
+
+      .c3 {
+        grid-column: span 3;
+      }
+
+      .c4 {
+        grid-column: span 4;
+      }
+
+      .c5 {
+        grid-column: span 5;
+      }
+
+      .c6 {
+        grid-column: span 6;
+      }
+
+      .c7 {
+        grid-column: span 7;
+      }
+
+      .c8 {
+        grid-column: span 8;
+      }
+
+      .c9 {
+        grid-column: span 9;
+      }
+
+      .c12 {
+        grid-column: span 12;
+      }
+
+      .topbar .brand {
+        font-family: "Bebas Neue", sans-serif;
+        letter-spacing: 0.03em;
+        font-size: clamp(1.4rem, 2.7vw, 2.3rem);
+      }
+
+      .topbar nav {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+      }
+
+      .topbar a {
+        text-decoration: none;
+        color: var(--black);
+        border: var(--line) solid var(--black);
+        padding: 0.35rem 0.6rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        transition: transform 120ms linear, background-color 120ms linear, color 120ms linear;
+      }
+
+      .topbar a:hover {
+        background: var(--red);
+        color: var(--white);
+        transform: translate(-3px, -3px);
+      }
+
+      .hero .hero-main {
+        padding: 1.2rem;
+      }
+
+      .tag {
+        display: inline-block;
+        border: var(--line) solid var(--black);
+        padding: 0.28rem 0.55rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+      }
+
+      h1 {
+        margin: 0;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(3.6rem, 12vw, 10rem);
+        line-height: 0.84;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+
+      .hero p {
+        margin: 0.9rem 0 0;
+        max-width: 38ch;
+        font-size: clamp(1rem, 2vw, 1.22rem);
+        font-weight: 500;
+      }
+
+      .hero-kpi,
+      .hero-side {
+        display: grid;
+        align-content: space-between;
+        gap: 0.7rem;
+      }
+
+      .metric {
+        border: var(--line) solid var(--black);
+        padding: 0.6rem;
+      }
+
+      .metric strong {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(1.8rem, 3.8vw, 3rem);
+        line-height: 1;
+      }
+
+      .metric span {
+        display: block;
+        margin-top: 0.2rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+      }
+
+      .is-red {
+        background: var(--red);
+        color: var(--white);
+      }
+
+      .section-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        line-height: 0.9;
+        margin: 0;
+        text-transform: uppercase;
+      }
+
+      .section-sub {
+        margin: 0;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .module {
+        min-height: 210px;
+        display: grid;
+        align-content: space-between;
+        gap: 0.5rem;
+      }
+
+      .module h3 {
+        margin: 0;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(1.7rem, 3vw, 2.5rem);
+        line-height: 0.88;
+      }
+
+      .module ul {
+        margin: 0;
+        padding-left: 1.05rem;
+      }
+
+      .module li {
+        margin: 0.34rem 0;
+        font-weight: 500;
+      }
+
+      .scene-card,
+      .flow-step,
+      .kpi-card {
+        transition: transform 100ms linear, background-color 100ms linear, color 100ms linear;
+      }
+
+      .scene-card {
+        min-height: 138px;
+        display: grid;
+        align-content: space-between;
+      }
+
+      .scene-card strong {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(1.4rem, 2.3vw, 2rem);
+        line-height: 0.9;
+      }
+
+      .scene-card p {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+
+      .scene-card:hover,
+      .flow-step:hover,
+      .kpi-card:hover {
+        transform: translate(-4px, -4px);
+      }
+
+      .flow-step {
+        min-height: 124px;
+        display: grid;
+        align-content: start;
+        gap: 0.5rem;
+      }
+
+      .flow-step .n {
+        width: 2.1rem;
+        border: var(--line) solid var(--black);
+        text-align: center;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.3rem;
+        line-height: 1.2;
+      }
+
+      .flow-step h3 {
+        margin: 0;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.65rem;
+        line-height: 0.9;
+      }
+
+      .flow-step p {
+        margin: 0;
+      }
+
+      .kpi-card {
+        min-height: 124px;
+        display: grid;
+        align-content: center;
+      }
+
+      .kpi-card strong {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2rem, 4vw, 3.4rem);
+        line-height: 0.86;
+      }
+
+      .kpi-card span {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.74rem;
+        text-transform: uppercase;
+      }
+
+      .footer-contact {
+        font-family: "IBM Plex Mono", monospace;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      body.ready .reveal {
+        animation: reveal 0.38s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        animation-delay: calc(var(--i, 0) * 80ms);
+      }
+
+      @keyframes reveal {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 1120px) {
+        .hero .hero-main,
+        .hero-side,
+        .hero-kpi,
+        .section-head-left,
+        .section-head-right,
+        .module,
+        .scene-card,
+        .flow-step,
+        .kpi-card {
+          grid-column: span 12;
+        }
+
+        .topbar .brand,
+        .topbar nav {
+          grid-column: span 12;
+        }
+
+        .topbar nav {
+          justify-content: flex-start;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .site {
+          width: 96vw;
+        }
+
+        h1 {
+          font-size: clamp(3.2rem, 18vw, 7rem);
+        }
+
+        .topbar a {
+          font-size: 0.7rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="site">
+      <header class="row topbar reveal" style="--i: 0">
+        <div class="col c4 brand">AXIS FORGE ROBOTICS</div>
+        <nav class="col c8" aria-label="主导航">
+          <a href="#platform">平台模块</a>
+          <a href="#scenes">行业场景</a>
+          <a href="#delivery">交付流程</a>
+          <a href="#contact">联系</a>
+        </nav>
+      </header>
+
+      <section class="row hero reveal" style="--i: 1" aria-labelledby="hero-title">
+        <div class="col c7 hero-main">
+          <span class="tag">Industrial Robotics / Black White Red</span>
+          <h1 id="hero-title">Drive The Line Into Red Zone</h1>
+          <p>
+            工业机器人、视觉系统、调度中枢一体化交付。目标很直接：
+            节拍更快、换线更稳、每个班次都能看见可量化增益。
+          </p>
+        </div>
+
+        <aside class="col c3 hero-side">
+          <div class="metric">
+            <strong>72h</strong>
+            <span>Fast Deployment</span>
+          </div>
+          <div class="metric is-red">
+            <strong>+38%</strong>
+            <span>Shift Throughput</span>
+          </div>
+          <div class="metric">
+            <strong>99.93%</strong>
+            <span>Uptime</span>
+          </div>
+        </aside>
+
+        <aside class="col c2 hero-kpi">
+          <div class="metric">
+            <strong>210</strong>
+            <span>Live Cells</span>
+          </div>
+          <div class="metric is-red">
+            <strong>32</strong>
+            <span>Cities</span>
+          </div>
+        </aside>
+      </section>
+
+      <section id="platform" class="reveal" style="--i: 2">
+        <div class="row">
+          <div class="col c8 section-head-left">
+            <h2 class="section-title">Platform Modules</h2>
+          </div>
+          <div class="col c4 section-head-right">
+            <p class="section-sub">Robot Cell / Vision AI / Safe OS</p>
+          </div>
+        </div>
+        <div class="row">
+          <article class="col c4 module">
+            <h3>Robot Cell</h3>
+            <ul>
+              <li>高节拍焊装与装配单元</li>
+              <li>离线编程 + 在线自校准</li>
+              <li>工位级 OEE 实时回传</li>
+            </ul>
+          </article>
+          <article class="col c4 module is-red">
+            <h3>Vision AI</h3>
+            <ul>
+              <li>2D/3D 缺陷识别</li>
+              <li>抓取路径动态纠偏</li>
+              <li>多型号共线识别策略</li>
+            </ul>
+          </article>
+          <article class="col c4 module">
+            <h3>Safe OS</h3>
+            <ul>
+              <li>联锁安全与权限分层</li>
+              <li>异常停机快速恢复回路</li>
+              <li>日志追溯到动作级</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="scenes" class="reveal" style="--i: 3">
+        <div class="row">
+          <div class="col c7 section-head-left">
+            <h2 class="section-title">Scenario Matrix</h2>
+          </div>
+          <div class="col c5 section-head-right">
+            <p class="section-sub">Welding / Assembly / Palletizing / Inspection</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <article class="col c3 scene-card is-red">
+            <strong>汽车焊装</strong>
+            <p>节拍从 4.6s 降到 3.2s，返修率下降 19%</p>
+          </article>
+          <article class="col c3 scene-card">
+            <strong>3C 装配</strong>
+            <p>错位率下降 67%，治具切换耗时减半</p>
+          </article>
+          <article class="col c3 scene-card">
+            <strong>重工搬运</strong>
+            <p>180kg 负载连续作业，夜班稳定运行</p>
+          </article>
+          <article class="col c3 scene-card">
+            <strong>电池分拣</strong>
+            <p>包级追踪全记录，流向可回查</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="delivery" class="reveal" style="--i: 4">
+        <div class="row">
+          <div class="col c7 section-head-left">
+            <h2 class="section-title">Delivery Rhythm</h2>
+          </div>
+          <div class="col c5 section-head-right">
+            <p class="section-sub">Audit / Simulation / Launch / Optimization</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <article class="col c3 flow-step">
+            <span class="n">1</span>
+            <h3>现场审计</h3>
+            <p>48 小时完成节拍与瓶颈诊断。</p>
+          </article>
+          <article class="col c3 flow-step is-red">
+            <span class="n">2</span>
+            <h3>仿真验证</h3>
+            <p>路径、碰撞、节拍全链路预演。</p>
+          </article>
+          <article class="col c3 flow-step">
+            <span class="n">3</span>
+            <h3>快速上线</h3>
+            <p>模块化切换，最短 72h 恢复生产。</p>
+          </article>
+          <article class="col c3 flow-step">
+            <span class="n">4</span>
+            <h3>持续优化</h3>
+            <p>周级复盘 + 7×24 远程响应。</p>
+          </article>
+        </div>
+
+        <div class="row" id="contact">
+          <article class="col c3 kpi-card">
+            <strong>32+</strong>
+            <span>交付城市</span>
+          </article>
+          <article class="col c3 kpi-card is-red">
+            <strong>14</strong>
+            <span>行业模板</span>
+          </article>
+          <article class="col c3 kpi-card">
+            <strong>7×24</strong>
+            <span>支持响应</span>
+          </article>
+          <article class="col c3 kpi-card">
+            <strong>210</strong>
+            <span>上线单元</span>
+          </article>
+        </div>
+
+        <div class="row">
+          <div class="col c12 footer-contact">
+            CONTACT — hello@axisforge-robotics.com &nbsp;|&nbsp; HOTLINE — 400-800-9021
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        document.body.classList.add("ready");
+      });
+    </script>
+  </body>
+</html>

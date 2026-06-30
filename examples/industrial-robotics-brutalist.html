@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AXIS FORGE | 工业机器人品牌官网</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee&family=IBM+Plex+Mono:wght@500;700&family=IBM+Plex+Sans:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #080808;
+        --paper: #f6f2e7;
+        --yellow: #ffd60a;
+        --pink: #ff5ab4;
+        --blue: #43d7ff;
+        --red: #ff2e2e;
+        --border: 4px;
+        --shadow: 8px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "IBM Plex Sans", sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          radial-gradient(circle at 8% 18%, rgba(255, 214, 10, 0.22), transparent 26%),
+          radial-gradient(circle at 88% 74%, rgba(255, 90, 180, 0.2), transparent 24%),
+          repeating-linear-gradient(
+            -17deg,
+            rgba(0, 0, 0, 0.04) 0,
+            rgba(0, 0, 0, 0.04) 2px,
+            transparent 2px,
+            transparent 22px
+          );
+        z-index: -2;
+      }
+
+      .site {
+        width: min(1200px, 92vw);
+        margin: 1.1rem auto 4rem;
+        display: grid;
+        gap: 1.4rem;
+      }
+
+      .panel {
+        border: var(--border) solid var(--ink);
+        box-shadow: var(--shadow) var(--shadow) 0 var(--ink);
+        background: #ffffff;
+      }
+
+      .pop {
+        opacity: 0;
+        transform: translateY(24px) scale(0.95);
+      }
+
+      body.is-ready .pop {
+        animation: snap-in 0.45s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        animation-delay: calc(var(--d, 0) * 95ms);
+      }
+
+      @keyframes snap-in {
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes sticker-hop {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(-8deg);
+        }
+        50% {
+          transform: translate(2px, -3px) rotate(-5deg);
+        }
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.9rem 1rem;
+        background: var(--yellow);
+      }
+
+      .brand {
+        font-family: "Bungee", sans-serif;
+        font-size: clamp(1.05rem, 2.4vw, 1.65rem);
+        letter-spacing: 0.02em;
+      }
+
+      .topbar nav {
+        display: flex;
+        gap: 0.55rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-chip {
+        text-decoration: none;
+        color: var(--ink);
+        border: 3px solid var(--ink);
+        background: #fff;
+        box-shadow: 4px 4px 0 var(--ink);
+        padding: 0.35rem 0.65rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        transition: transform 0.12s steps(2, end), box-shadow 0.12s steps(2, end);
+      }
+
+      .nav-chip:hover {
+        transform: translate(-4px, -4px);
+        box-shadow: 8px 8px 0 var(--ink);
+      }
+
+      .hero {
+        position: relative;
+        padding: 1.25rem;
+        background: linear-gradient(155deg, #ffffff 0%, #fff8cf 100%);
+      }
+
+      .sticker {
+        position: absolute;
+        top: -20px;
+        right: 26px;
+        border: var(--border) solid var(--ink);
+        background: var(--pink);
+        color: var(--ink);
+        box-shadow: 6px 6px 0 var(--ink);
+        padding: 0.35rem 0.7rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-weight: 700;
+        font-size: 0.73rem;
+        letter-spacing: 0.04em;
+        transform: rotate(-8deg);
+        animation: sticker-hop 0.75s steps(2, end) infinite;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 1rem;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        margin: 0;
+        border: 3px solid var(--ink);
+        box-shadow: 4px 4px 0 var(--ink);
+        background: var(--blue);
+        padding: 0.26rem 0.55rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        font-family: "Bungee", sans-serif;
+        margin: 0.7rem 0 0.7rem;
+        line-height: 0.96;
+        font-size: clamp(2.2rem, 6vw, 5.2rem);
+        text-wrap: balance;
+      }
+
+      .hero-lead {
+        margin: 0;
+        font-size: clamp(1rem, 2vw, 1.22rem);
+        font-weight: 500;
+        max-width: 36ch;
+      }
+
+      .cta-row {
+        margin-top: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.7rem;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        border: var(--border) solid var(--ink);
+        box-shadow: 6px 6px 0 var(--ink);
+        padding: 0.7rem 1rem;
+        font-weight: 700;
+        color: var(--ink);
+        transition:
+          transform 0.13s steps(2, end),
+          box-shadow 0.13s steps(2, end),
+          background-color 0.13s steps(2, end);
+      }
+
+      .btn:hover {
+        transform: translate(-6px, -6px);
+        box-shadow: 12px 12px 0 var(--ink);
+      }
+
+      .btn-black {
+        background: var(--ink);
+        color: #fff;
+      }
+
+      .btn-pink {
+        background: var(--pink);
+      }
+
+      .hero-metrics {
+        margin: 1rem 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.65rem;
+      }
+
+      .hero-metrics li {
+        border: 3px solid var(--ink);
+        background: #fff;
+        box-shadow: 4px 4px 0 var(--ink);
+        padding: 0.45rem;
+        font-size: 0.8rem;
+      }
+
+      .hero-metrics strong {
+        display: block;
+        font-family: "Bungee", sans-serif;
+        font-size: 1.15rem;
+        line-height: 1;
+      }
+
+      .robot-board {
+        border: var(--border) solid var(--ink);
+        box-shadow: 6px 6px 0 var(--ink);
+        background: var(--ink);
+        color: #fff;
+        padding: 0.8rem;
+        position: relative;
+        min-height: 320px;
+        transform: rotate(1.2deg);
+      }
+
+      .robot-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.65rem;
+      }
+
+      .machine {
+        border: 3px solid #fff;
+        min-height: 110px;
+        position: relative;
+      }
+
+      .machine::before,
+      .machine::after {
+        content: "";
+        position: absolute;
+        background: #fff;
+      }
+
+      .machine::before {
+        width: 14px;
+        height: 14px;
+        right: 8px;
+        top: 8px;
+      }
+
+      .machine::after {
+        width: 40px;
+        height: 6px;
+        left: 12px;
+        bottom: 12px;
+      }
+
+      .machine span {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.05em;
+      }
+
+      .robot-note {
+        margin-top: 0.75rem;
+        border: 3px solid #fff;
+        padding: 0.45rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.75rem;
+        line-height: 1.45;
+      }
+
+      .content {
+        position: relative;
+        padding: 1rem;
+      }
+
+      .content-head {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 0.9rem;
+      }
+
+      .content-head h2 {
+        margin: 0;
+        font-family: "Bungee", sans-serif;
+        font-size: clamp(1.45rem, 3vw, 2.5rem);
+        line-height: 1;
+      }
+
+      .content-head p {
+        margin: 0;
+        border: 3px solid var(--ink);
+        box-shadow: 4px 4px 0 var(--ink);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        padding: 0.3rem 0.55rem;
+        background: #fff;
+      }
+
+      .module-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.85rem;
+      }
+
+      .module {
+        border: var(--border) solid var(--ink);
+        box-shadow: 7px 7px 0 var(--ink);
+        padding: 0.8rem;
+        transition: transform 0.14s steps(2, end), box-shadow 0.14s steps(2, end);
+      }
+
+      .module:hover {
+        transform: translate(-8px, -8px) rotate(var(--tilt, -1deg));
+        box-shadow: 15px 15px 0 var(--ink);
+      }
+
+      .module:nth-child(1) {
+        background: var(--yellow);
+        --tilt: -2deg;
+      }
+
+      .module:nth-child(2) {
+        background: var(--pink);
+        transform: rotate(-1deg);
+        --tilt: 1deg;
+      }
+
+      .module:nth-child(3) {
+        background: var(--blue);
+        --tilt: -1deg;
+        clip-path: polygon(0 0, 100% 0, 100% 84%, 88% 100%, 0 100%);
+      }
+
+      .module h3 {
+        margin: 0;
+        font-family: "Bungee", sans-serif;
+        font-size: 1.28rem;
+        line-height: 0.95;
+      }
+
+      .module ul {
+        margin: 0.55rem 0 0;
+        padding-left: 1rem;
+        font-weight: 600;
+      }
+
+      .module li + li {
+        margin-top: 0.38rem;
+      }
+
+      .scene-wrap {
+        background: linear-gradient(150deg, #c8f3ff 0%, #ffffff 58%, #ffdede 100%);
+      }
+
+      .scene-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr 1fr;
+        grid-auto-rows: 120px;
+        gap: 0.75rem;
+      }
+
+      .scene {
+        border: var(--border) solid var(--ink);
+        box-shadow: 7px 7px 0 var(--ink);
+        background: #fff;
+        padding: 0.7rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.12s steps(2, end), box-shadow 0.12s steps(2, end);
+      }
+
+      .scene:hover {
+        transform: translate(-7px, -7px) rotate(-1deg);
+        box-shadow: 14px 14px 0 var(--ink);
+      }
+
+      .scene strong {
+        font-family: "Bungee", sans-serif;
+        font-size: 1.1rem;
+      }
+
+      .scene small {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.75rem;
+      }
+
+      .scene.hot {
+        background: var(--red);
+        color: #fff;
+        grid-row: span 2;
+      }
+
+      .scene.yellow {
+        background: var(--yellow);
+      }
+
+      .scene.blue {
+        background: var(--blue);
+      }
+
+      .scene.pink {
+        background: var(--pink);
+      }
+
+      .flow-wrap {
+        background: #fff;
+      }
+
+      .flow-grid {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 0.8rem;
+      }
+
+      .timeline {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.65rem;
+      }
+
+      .timeline li {
+        border: 3px solid var(--ink);
+        box-shadow: 5px 5px 0 var(--ink);
+        padding: 0.55rem;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.5rem;
+        align-items: center;
+        background: #fff;
+      }
+
+      .timeline b {
+        display: inline-grid;
+        place-items: center;
+        width: 2rem;
+        height: 2rem;
+        border: 3px solid var(--ink);
+        background: var(--yellow);
+        font-family: "Bungee", sans-serif;
+      }
+
+      .timeline h3 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .timeline p {
+        margin: 0.2rem 0 0;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.65rem;
+      }
+
+      .kpi {
+        border: var(--border) solid var(--ink);
+        box-shadow: 6px 6px 0 var(--ink);
+        background: #fff;
+        padding: 0.7rem;
+        text-align: center;
+        transition: transform 0.12s steps(2, end), box-shadow 0.12s steps(2, end);
+      }
+
+      .kpi:hover {
+        transform: translate(-6px, -6px);
+        box-shadow: 12px 12px 0 var(--ink);
+      }
+
+      .kpi:nth-child(1),
+      .kpi:nth-child(4) {
+        background: var(--yellow);
+      }
+
+      .kpi:nth-child(2) {
+        background: var(--pink);
+      }
+
+      .kpi:nth-child(3) {
+        background: var(--blue);
+      }
+
+      .kpi strong {
+        font-family: "Bungee", sans-serif;
+        font-size: clamp(1.4rem, 3vw, 2.2rem);
+        line-height: 1;
+      }
+
+      .kpi span {
+        display: block;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.75rem;
+        margin-top: 0.3rem;
+      }
+
+      .note-bottom {
+        margin-top: 0.85rem;
+        border: 3px dashed var(--ink);
+        padding: 0.55rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.74rem;
+        background: #fff;
+      }
+
+      .float-sticker {
+        position: absolute;
+        left: 12px;
+        top: -17px;
+        background: #fff;
+        border: 3px solid var(--ink);
+        box-shadow: 4px 4px 0 var(--ink);
+        transform: rotate(-6deg);
+        padding: 0.22rem 0.5rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.72rem;
+        font-weight: 700;
+      }
+
+      @media (max-width: 980px) {
+        .hero-grid,
+        .flow-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .module-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .scene-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .hero-metrics {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .site {
+          width: min(560px, 94vw);
+          gap: 1rem;
+          margin-top: 0.8rem;
+        }
+
+        .module-grid,
+        .scene-grid,
+        .kpi-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .scene.hot {
+          grid-row: auto;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .sticker {
+          right: 10px;
+          top: -18px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="site">
+      <header class="topbar panel pop" style="--d: 0">
+        <div class="brand">AXIS//FORGE ROBOTICS</div>
+        <nav aria-label="主导航">
+          <a class="nav-chip" href="#modules">平台</a>
+          <a class="nav-chip" href="#scenes">场景</a>
+          <a class="nav-chip" href="#delivery">交付</a>
+          <a class="nav-chip" href="#contact">联系</a>
+        </nav>
+      </header>
+
+      <section class="hero panel pop" style="--d: 1" aria-labelledby="hero-title">
+        <span class="sticker">NO PRETTY. JUST IMPACT.</span>
+        <div class="hero-grid">
+          <div>
+            <p class="eyebrow">工业机器人品牌官网首屏</p>
+            <h1 id="hero-title">把产线变成不会眨眼的机器军团</h1>
+            <p class="hero-lead">
+              我们为高节拍制造场景提供机器人单元、视觉系统和调度中枢。
+              风格硬、部署快、产能数据直接拉满。
+            </p>
+            <div class="cta-row">
+              <a class="btn btn-black" href="#contact">预约工厂诊断</a>
+              <a class="btn btn-pink" href="#modules">看核心模块</a>
+            </div>
+            <ul class="hero-metrics" aria-label="核心指标">
+              <li><strong>99.93%</strong> 稼动稳定率</li>
+              <li><strong>+38%</strong> 班次产能提升</li>
+              <li><strong>72h</strong> 快速切线部署</li>
+            </ul>
+          </div>
+
+          <aside class="robot-board" aria-label="机器人系统示意">
+            <div class="robot-grid">
+              <div class="machine"><span>CELL_A</span></div>
+              <div class="machine"><span>CELL_B</span></div>
+              <div class="machine"><span>VISION</span></div>
+              <div class="machine"><span>SCHED</span></div>
+            </div>
+            <div class="robot-note">
+              RUN STATUS // GREEN<br />
+              CYCLE // 2.8 SEC<br />
+              SHIFT OUTPUT // 12,480 PCS
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="modules" class="content panel pop" style="--d: 2">
+        <span class="float-sticker">PRODUCT BLOCK</span>
+        <div class="content-head">
+          <h2>核心产品模块</h2>
+          <p>Control + Vision + Safety</p>
+        </div>
+        <div class="module-grid">
+          <article class="module">
+            <h3>ROBOT CELL</h3>
+            <ul>
+              <li>重载与高速并行工位</li>
+              <li>离线编程 + 在线自校准</li>
+              <li>可视化 OEE 面板</li>
+            </ul>
+          </article>
+
+          <article class="module">
+            <h3>VISION AI</h3>
+            <ul>
+              <li>2D / 3D 缺陷检测</li>
+              <li>抓取路径实时纠偏</li>
+              <li>多机型模型管理</li>
+            </ul>
+          </article>
+
+          <article class="module">
+            <h3>SAFE OS</h3>
+            <ul>
+              <li>安全栅栏与联锁策略</li>
+              <li>异常停机快速回路</li>
+              <li>日志可追溯到工位级</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="scenes" class="content panel scene-wrap pop" style="--d: 3">
+        <span class="float-sticker">SCENARIO WALL</span>
+        <div class="content-head">
+          <h2>场景落地战果</h2>
+          <p>Welding / Assembly / Palletizing</p>
+        </div>
+
+        <div class="scene-grid">
+          <article class="scene hot">
+            <strong>汽车焊装</strong>
+            <small>节拍从 4.6s 压到 3.2s，良率提升 11.8%</small>
+          </article>
+          <article class="scene yellow">
+            <strong>3C 装配</strong>
+            <small>视觉引导抓取，错位率下降 67%</small>
+          </article>
+          <article class="scene blue">
+            <strong>重工搬运</strong>
+            <small>负载 180kg，24h 连续运行</small>
+          </article>
+          <article class="scene pink">
+            <strong>电池分拣</strong>
+            <small>全链路追踪，每包可回查</small>
+          </article>
+          <article class="scene">
+            <strong>终检包装</strong>
+            <small>人机协作工位，交接零停顿</small>
+          </article>
+        </div>
+      </section>
+
+      <section id="delivery" class="content panel flow-wrap pop" style="--d: 4">
+        <span class="float-sticker">DEPLOYMENT FLOW</span>
+        <div class="content-head">
+          <h2>交付节奏与服务能力</h2>
+          <p>From Audit to Scale</p>
+        </div>
+
+        <div class="flow-grid">
+          <ol class="timeline">
+            <li>
+              <b>1</b>
+              <div>
+                <h3>现场审计</h3>
+                <p>48 小时内完成节拍与瓶颈评估，给出改线清单。</p>
+              </div>
+            </li>
+            <li>
+              <b>2</b>
+              <div>
+                <h3>仿真验证</h3>
+                <p>数字孪生预演路径、碰撞与节拍，不在产线试错。</p>
+              </div>
+            </li>
+            <li>
+              <b>3</b>
+              <div>
+                <h3>快速上线</h3>
+                <p>模块化上线，最短 72 小时恢复连续生产。</p>
+              </div>
+            </li>
+            <li>
+              <b>4</b>
+              <div>
+                <h3>持续优化</h3>
+                <p>按周迭代策略，远程诊断 + 现场增援双通道。</p>
+              </div>
+            </li>
+          </ol>
+
+          <div class="kpi-grid" id="contact">
+            <article class="kpi">
+              <strong>32+</strong>
+              <span>交付城市</span>
+            </article>
+            <article class="kpi">
+              <strong>14</strong>
+              <span>行业模板</span>
+            </article>
+            <article class="kpi">
+              <strong>7×24</strong>
+              <span>响应支持</span>
+            </article>
+            <article class="kpi">
+              <strong>210</strong>
+              <span>已上线机器人单元</span>
+            </article>
+          </div>
+        </div>
+
+        <div class="note-bottom">
+          CONTACT // hello@axisforge-robotics.com &nbsp;&nbsp; HOTLINE // 400-800-9021
+        </div>
+      </section>
+    </main>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        document.body.classList.add("is-ready");
+      });
+    </script>
+  </body>
+</html>
